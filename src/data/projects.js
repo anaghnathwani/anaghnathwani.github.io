@@ -26,12 +26,13 @@ export const projects = [
     title: "Modus",
     description:
       "A modern adaptation of WebVM; designed to combat the modern restrictions of Virtual Machines and ChromeOS. Tested using Jest. Built with a computer. ",
-    tags: ["TypeScript", "Rollup", "Jest"],
+    tags: ["JavaScript", "Svelte", "Jest", "CSS"],
     github: "https://github.com/anaghnathwani",
     live: "https://example.com",
     featured: true,
     accentColor: "#10b981",
   },
+  /*
   {
     id: 4,
     title: "Project Delta",
@@ -65,4 +66,5 @@ export const projects = [
     featured: false,
     accentColor: "#6366f1",
   },
+    */
 ];
