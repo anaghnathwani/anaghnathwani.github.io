@@ -2,7 +2,7 @@ export const profile = {
   name: "Anagh Nathwani",
   title: "Software Engineer",
   tagline: "I build things for the web — and sometimes beyond it.",
-  bio: `I'm a software engineer who enjoys working across the full stack.
+  bio: `I'm a freshman in highschool who appreciates the art of expressing data on computers. 
 I care about clean code, good abstractions, and shipping things that actually work.
 When I'm not coding, you'll find me reading, hiking, or tinkering with side projects.`,
   location: "Your City, Country",
