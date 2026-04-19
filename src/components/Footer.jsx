@@ -11,9 +11,6 @@ export default function Footer() {
         <a href={profile.github} target="_blank" rel="noopener noreferrer" className={styles.link}>
           GitHub
         </a>
-        <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className={styles.link}>
-          LinkedIn
-        </a>
         <a href={`mailto:${profile.email}`} className={styles.link}>
           Email
         </a>

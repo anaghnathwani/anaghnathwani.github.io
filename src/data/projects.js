@@ -20,7 +20,8 @@ export const projects = [
     live: null,
     featured: true,
     accentColor: "#3b82f6",
-  },
+  }
+   /*
   {
     id: 3,
     title: "Modus",
@@ -32,7 +33,7 @@ export const projects = [
     featured: true,
     accentColor: "#10b981",
   },
-  /*
+ 
   {
     id: 4,
     title: "Project Delta",
