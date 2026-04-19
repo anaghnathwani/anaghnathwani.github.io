@@ -5,7 +5,7 @@ export const projects = [
     description:
       "A full-stack web app that does something impressive. Built with modern tooling and a focus on performance and developer experience.",
     tags: ["React", "Node.js", "Firebase", "Firestore"],
-    github: "https://github.com/anaghnathwani",
+    github: "https://github.com/aNathwani44/Anagh-Nathwani-2026-cca-igem",
     live: null,
     featured: true,
     accentColor: "#aa3bff",
@@ -16,24 +16,23 @@ export const projects = [
     description:
       "A CLI tool that automatically solves Sudoku puzzles input as PDFs, exports answer as PDF in the same folder as the code is stored. Built with Python.",
     tags: ["Python", "PyPDF", "Shell"],
-    github: "https://github.com/anaghnathwani",
+    github: "https://github.com/Levitation-Labs/sudokuSolver",
     live: null,
     featured: true,
     accentColor: "#3b82f6",
-  }
-   /*
+  },
+  
   {
     id: 3,
-    title: "Modus",
+    title: "EasyBios, navigate your PC like a pro",
     description:
       "A modern adaptation of WebVM; designed to combat the modern restrictions of Virtual Machines and ChromeOS. Tested using Jest. Built with a computer. ",
-    tags: ["JavaScript", "Svelte", "Jest", "CSS"],
-    github: "https://github.com/anaghnathwani",
-    live: "https://example.com",
+    tags: ["Python"],
+    github: "https://github.com/anaghNathwani/EasyBios",
     featured: true,
     accentColor: "#10b981",
   },
- 
+ /*
   {
     id: 4,
     title: "Project Delta",
