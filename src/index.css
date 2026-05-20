@@ -91,3 +91,8 @@ a {
   background: var(--border);
   border-radius: 3px;
 }
+
+
+body {
+cursor: url('/cursor-removebg-preview.png'), auto;
+}

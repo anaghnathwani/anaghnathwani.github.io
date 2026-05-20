@@ -21,9 +21,7 @@ export default function About() {
             <Button href={profile.github} variant="secondary" external size="md">
               GitHub
             </Button>
-            <Button href={profile.linkedin} variant="ghost" external size="md">
-              LinkedIn
-            </Button>
+            
           </div>
         </div>
         <div className={styles.avatar} aria-hidden>
