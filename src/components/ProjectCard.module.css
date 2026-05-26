@@ -1,3 +1,8 @@
+@keyframes borderGlow {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1.0; }
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -5,13 +10,47 @@
   border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   text-align: left;
+  position: relative;
+}
+
+/* glow ring pseudo-element */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, var(--accent), #3b9fff, var(--accent));
+  background-size: 300% 300%;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+  animation: borderGlow 2.5s ease-in-out infinite paused;
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow);
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 40px -8px rgba(170, 59, 255, 0.20),
+    0 8px 16px -4px rgba(0, 0, 0, 0.08);
+  border-color: var(--accent-border);
+}
+
+.card:hover::before {
+  opacity: 0.55;
+  animation-play-state: running;
+}
+
+@media (prefers-color-scheme: dark) {
+  .card:hover {
+    box-shadow:
+      0 20px 40px -8px rgba(170, 59, 255, 0.30),
+      0 8px 16px -4px rgba(0, 0, 0, 0.40);
+  }
+  .card:hover::before {
+    opacity: 0.70;
+  }
 }
 
 .accent {
