@@ -37,14 +37,38 @@
 }
 
 /* variants */
+@keyframes btnShimmer {
+  0%   { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(300%)  skewX(-15deg); }
+}
+
 .primary {
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent) 0%, #8b2de0 100%);
   color: #fff;
   border-color: var(--accent);
+  position: relative;
+  overflow: hidden;
 }
+
+.primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
+  transform: translateX(-100%) skewX(-15deg);
+  pointer-events: none;
+}
+
+.primary:hover::after {
+  animation: btnShimmer 0.6s ease forwards;
+}
+
 .primary:hover {
-  opacity: 0.92;
-  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 40%, transparent), 0 0 0 3px var(--accent-bg);
+  opacity: 1;
+  background: linear-gradient(135deg, #be5eff 0%, var(--accent) 100%);
+  box-shadow:
+    0 4px 20px color-mix(in srgb, var(--accent) 50%, transparent),
+    0 0 0 3px var(--accent-bg);
 }
 
 .secondary {

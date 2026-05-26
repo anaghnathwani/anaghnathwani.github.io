@@ -2,10 +2,16 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--bg);
+  background: rgba(255, 255, 255, 0.75);
   border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    background: rgba(15, 17, 23, 0.80);
+  }
 }
 
 .nav {
@@ -17,16 +23,22 @@
 }
 
 .logo {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 15px;
   color: var(--text-h);
   text-decoration: none;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.3px;
   transition: color 0.15s;
+  background: linear-gradient(90deg, var(--text-h), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .logo:hover {
-  color: var(--accent);
+  background: linear-gradient(90deg, var(--accent), #3b9fff);
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 .links {
@@ -46,16 +58,17 @@
   padding: 5px 12px;
   border-radius: 6px;
   transition: color 0.15s, background 0.15s;
+  position: relative;
 }
 
 .link:hover {
   color: var(--text-h);
-  background: var(--code-bg);
+  background: var(--accent-bg);
 }
 
 .active {
-  color: var(--text-h);
-  background: var(--code-bg);
+  color: var(--accent);
+  background: var(--accent-bg);
 }
 
 @media (max-width: 768px) {

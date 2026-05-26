@@ -1,9 +1,12 @@
 /* ── Hero ── */
 .hero {
   position: relative;
-  padding: 96px 48px 80px;
+  padding: 110px 48px 100px;
   text-align: left;
   overflow: hidden;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
 }
 
 .heroInner {
@@ -12,15 +15,15 @@
   max-width: 640px;
 }
 
-.heroGlow {
-  position: absolute;
-  top: -120px;
-  right: -80px;
-  width: 560px;
-  height: 560px;
-  background: radial-gradient(circle at center, var(--accent-bg) 0%, transparent 65%);
-  pointer-events: none;
-  z-index: 0;
+/* gradient shimmer on the name — dark mode */
+@keyframes shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .greeting {
@@ -30,29 +33,54 @@
   margin: 0 0 8px;
   font-family: var(--mono);
   letter-spacing: 0.04em;
+  animation: fadeUp 0.6s ease both;
 }
 
 .name {
-  font-size: clamp(28px, 4vw, 48px);
+  font-size: clamp(28px, 4vw, 52px);
   font-weight: 700;
-  color: var(--text-h);
-  letter-spacing: -1px;
+  letter-spacing: -1.5px;
   line-height: 1.05;
   margin: 0 0 20px;
+  animation: fadeUp 0.6s 0.1s ease both;
+
+  /* default: solid colour */
+  color: var(--text-h);
+}
+
+/* gradient shimmer only when the OS prefers dark */
+@media (prefers-color-scheme: dark) {
+  .name {
+    background: linear-gradient(
+      110deg,
+      #e8d0ff 0%,
+      #aa3bff 30%,
+      #6f6fff 55%,
+      #aa3bff 70%,
+      #e8d0ff 100%
+    );
+    background-size: 250% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeUp 0.6s 0.1s ease both, shimmer 5s 1s linear infinite;
+  }
 }
 
 .subtitle {
-  font-size: 21px;
+  font-size: 20px;
   color: var(--text);
-  margin: 0 0 36px;
-  line-height: 150%;
+  margin: 0 0 38px;
+  line-height: 155%;
   max-width: 500px;
+  animation: fadeUp 0.6s 0.2s ease both;
 }
 
 .ctas {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  animation: fadeUp 0.6s 0.3s ease both;
 }
 
 /* ── Projects grid ── */
@@ -143,6 +171,7 @@
 
 @media (max-width: 768px) {
   .hero {
-    padding: 64px 24px 56px;
+    padding: 72px 24px 64px;
+    min-height: 400px;
   }
 }
