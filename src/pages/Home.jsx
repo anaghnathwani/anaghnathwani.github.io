@@ -3,7 +3,6 @@ import PageLayout from "../components/PageLayout";
 import Section from "../components/Section";
 import ProjectCard from "../components/ProjectCard";
 import Button from "../components/Button";
-import ShaderHero from "../components/ShaderHero";
 import { profile } from "../data/profile";
 import { projects } from "../data/projects";
 import styles from "./Home.module.css";
@@ -22,9 +21,7 @@ export default function Home() {
     <PageLayout>
       {/* ── Hero ── */}
       <div className={styles.hero}>
-        <ShaderHero />
-        {/* Glass card floats over the shader */}
-        <div className={styles.heroGlass}>
+        <div className={styles.heroInner}>
           <p className={styles.greeting}>Hey, I'm</p>
           <h1 className={styles.name}>{profile.name}</h1>
           <p className={styles.subtitle}>{profile.tagline}</p>
@@ -37,6 +34,7 @@ export default function Home() {
             </Button>
           </div>
         </div>
+        <div className={styles.heroGlow} aria-hidden />
       </div>
 
       {/* ── Featured Projects ── */}
