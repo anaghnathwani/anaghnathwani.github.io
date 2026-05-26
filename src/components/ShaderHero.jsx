@@ -8,7 +8,7 @@ void main() {
 }
 `;
 
-/* Domain-warped fbm shader — dark mode: deep-space aurora, light mode: soft caustics */
+/* Richer domain-warped aurora — designed to look beautiful through a glass card */
 const FRAG = `
 precision mediump float;
 
@@ -26,14 +26,13 @@ float vnoise(vec2 p) {
   vec2 f = fract(p);
   f = f * f * (3.0 - 2.0 * f);
   return mix(
-    mix(rand(i),              rand(i + vec2(1.0, 0.0)), f.x),
-    mix(rand(i + vec2(0.0,1.0)), rand(i + vec2(1.0,1.0)), f.x),
+    mix(rand(i),                 rand(i + vec2(1.0, 0.0)), f.x),
+    mix(rand(i + vec2(0.0, 1.0)), rand(i + vec2(1.0, 1.0)), f.x),
     f.y
   );
 }
 
 const mat2 M = mat2(1.6, 1.2, -1.2, 1.6);
-
 float fbm(vec2 p) {
   float v = 0.0, a = 0.5;
   for (int i = 0; i < 5; i++) {
@@ -46,83 +45,90 @@ float fbm(vec2 p) {
 
 void main() {
   vec2 uv  = gl_FragCoord.xy / u_res;
-  float t  = u_time * 0.16;
+  float t  = u_time * 0.14;
   float ar = u_res.x / u_res.y;
 
   vec2 p     = uv * vec2(ar, 1.0);
   vec2 mouse = u_mouse * vec2(ar, 1.0);
 
-  /* mouse ripple */
   float md    = length(p - mouse);
-  float mwave = exp(-md * 3.5) * 0.22;
+  float mwave = exp(-md * 3.2) * 0.28;
 
   /* double domain warp */
-  vec2 q = vec2(fbm(p + t),             fbm(p + vec2(3.7, 2.1) + t));
+  vec2 q = vec2(fbm(p + t),                    fbm(p + vec2(3.8, 2.3) + t));
   vec2 r = vec2(
-    fbm(p + 2.8 * q + vec2(1.7,  9.2) + 0.14 * t),
-    fbm(p + 2.8 * q + vec2(8.3,  2.8) + 0.11 * t)
+    fbm(p + 3.0 * q + vec2(1.7, 9.2) + 0.14 * t),
+    fbm(p + 3.0 * q + vec2(8.3, 2.8) + 0.11 * t)
   );
-  float f = fbm(p + 2.8 * r + mwave);
+  float f = fbm(p + 3.0 * r + mwave);
 
   vec3 col;
 
   if (u_dark > 0.5) {
-    /* ── dark: aurora borealis ── */
-    vec3 space   = vec3(0.028, 0.020, 0.065);
-    vec3 dPurple = vec3(0.20,  0.04,  0.48);
-    vec3 violet  = vec3(0.50,  0.13,  0.90);
-    vec3 blueV   = vec3(0.08,  0.20,  0.78);
-    vec3 pink    = vec3(0.80,  0.12,  0.70);
-    vec3 teal    = vec3(0.04,  0.48,  0.72);
+    /* dark: rich deep-space aurora, vivid enough to show through glass */
+    vec3 ink     = vec3(0.02, 0.02, 0.06);
+    vec3 dPurple = vec3(0.28, 0.06, 0.60);
+    vec3 violet  = vec3(0.60, 0.16, 1.00);
+    vec3 indigo  = vec3(0.18, 0.28, 0.95);
+    vec3 pink    = vec3(0.90, 0.16, 0.76);
+    vec3 teal    = vec3(0.05, 0.60, 0.82);
 
-    col = space;
-    col = mix(col, dPurple, smoothstep(0.08, 0.40, f));
-    col = mix(col, violet,  smoothstep(0.28, 0.62, f));
-    col = mix(col, blueV,   smoothstep(0.50, 0.80, length(q)));
-    col = mix(col, pink,    smoothstep(0.60, 0.88, length(r)) * 0.32);
+    col = ink;
+    col = mix(col, dPurple, smoothstep(0.05, 0.38, f));
+    col = mix(col, violet,  smoothstep(0.26, 0.60, f));
+    col = mix(col, indigo,  smoothstep(0.50, 0.82, length(q)));
+    col = mix(col, pink,    smoothstep(0.62, 0.90, length(r)) * 0.40);
 
-    /* aurora band mid-screen */
-    float band  = smoothstep(0.30, 0.60, uv.y) * (1.0 - smoothstep(0.55, 0.95, uv.y));
-    float wave  = sin(p.x * 3.2 + t * 2.1 + fbm(p * 0.5) * 5.0) * 0.5 + 0.5;
-    col = mix(col, teal,   band * wave * 0.55);
-    col = mix(col, violet, band * (1.0 - wave) * 0.38);
+    /* horizontal aurora ribbon */
+    float band = smoothstep(0.28, 0.58, uv.y) * (1.0 - smoothstep(0.52, 0.92, uv.y));
+    float wave = sin(p.x * 3.4 + t * 2.2 + fbm(p * 0.4) * 6.0) * 0.5 + 0.5;
+    col = mix(col, teal,   band * wave * 0.65);
+    col = mix(col, violet, band * (1.0 - wave) * 0.45);
 
-    /* right-side glow (away from text) */
-    float sideGlow = smoothstep(0.4, 1.0, uv.x) * smoothstep(0.0, 0.6, uv.y);
-    col += violet * sideGlow * 0.18;
+    /* right-side glow (behind where glass card won't cover) */
+    float rGlow = smoothstep(0.42, 1.0, uv.x) * smoothstep(0.10, 0.70, uv.y);
+    col += violet * rGlow * 0.24;
+    col += indigo * rGlow * 0.14;
 
     /* mouse bloom */
-    col += vec3(0.65, 0.24, 0.96) * exp(-md * 4.0) * 0.50;
+    float bloom = exp(-md * 3.8);
+    col += vec3(0.70, 0.30, 1.00) * bloom * 0.55;
 
-    /* twinkling stars */
-    vec2 sg = floor(uv * 140.0);
-    float sr = rand(sg);
-    float blink = sin(u_time * (1.2 + sr * 3.5) + sr * 6.28) * 0.5 + 0.5;
-    col += vec3(0.85, 0.85, 1.0) * step(0.962, sr) * blink * 0.90;
+    /* soft twinkling stars */
+    vec2 sg    = floor(uv * 160.0);
+    float sr   = rand(sg);
+    float blink = sin(u_time * (1.2 + sr * 3.8) + sr * 6.28) * 0.5 + 0.5;
+    float starA = step(0.960, sr) * blink;
+    col += vec3(0.85, 0.85, 1.00) * starA;
 
-    col = pow(col, vec3(0.78));
+    /* subtle vignette to focus on card area */
+    vec2 vig = uv * 2.0 - 1.0;
+    col *= 1.0 - dot(vig * vec2(0.22, 0.35), vig * vec2(0.22, 0.35));
+
+    col = pow(max(col, vec3(0.0)), vec3(0.80));
 
   } else {
-    /* ── light: soft caustic glow ── */
-    vec3 white    = vec3(1.00, 0.99, 1.00);
-    vec3 lavender = vec3(0.93, 0.86, 1.00);
-    vec3 softBlue = vec3(0.85, 0.87, 1.00);
-    vec3 pinkT    = vec3(1.00, 0.87, 0.96);
+    /* light: painterly pastel gradients — soft but visible behind glass */
+    vec3 pearl   = vec3(0.99, 0.97, 1.00);
+    vec3 lavBlue = vec3(0.82, 0.82, 1.00);
+    vec3 lilac   = vec3(0.88, 0.72, 1.00);
+    vec3 roseQ   = vec3(1.00, 0.78, 0.92);
+    vec3 skyBlue = vec3(0.72, 0.86, 1.00);
 
-    col = white;
-    col = mix(col, lavender, f * 0.48);
-    col = mix(col, softBlue, length(q) * 0.20);
-    col = mix(col, pinkT,    length(r) * 0.12);
+    col = pearl;
+    col = mix(col, lavBlue, f * 0.70);
+    col = mix(col, lilac,   length(q) * 0.50);
+    col = mix(col, roseQ,   length(r) * 0.35);
+    col = mix(col, skyBlue, smoothstep(0.5, 0.9, f) * 0.40);
 
-    /* top light ray */
-    float ray = sin(uv.x * 3.14159) * pow(max(1.0 - uv.y, 0.0), 1.3) * 0.5;
-    col = mix(col, vec3(0.78, 0.62, 1.00), ray * 0.10);
+    /* top sweep of light */
+    float ray = sin(uv.x * 3.14159) * pow(max(1.0 - uv.y, 0.0), 1.1) * 0.6;
+    col = mix(col, vec3(0.72, 0.55, 1.00), ray * 0.18);
 
-    /* right glow */
-    float sg2 = smoothstep(0.45, 1.0, uv.x) * 0.12;
-    col = mix(col, lavender, sg2);
+    /* mouse bloom */
+    col = mix(col, lilac, exp(-md * 3.0) * 0.22);
 
-    col = clamp(col, vec3(0.92), vec3(1.0));
+    col = clamp(col, vec3(0.80), vec3(1.0));
   }
 
   gl_FragColor = vec4(col, 1.0);
@@ -133,7 +139,7 @@ export default function ShaderHero() {
   const canvasRef  = useRef(null);
   const frameRef   = useRef(null);
   const visibleRef = useRef(true);
-  const mouseRef   = useRef([0.72, 0.60]); // normalized, starts top-right
+  const mouseRef   = useRef([0.75, 0.55]);
   const startRef   = useRef(null);
 
   useEffect(() => {
