@@ -39,46 +39,39 @@ export default function Home() {
 
       {/* ── Featured Projects ── */}
       <Section title="Featured Projects" id="projects">
-        <div className={styles.orbWrap}>
-          <div className={styles.orb1} aria-hidden="true" />
-          <div className={styles.orb2} aria-hidden="true" />
-          <div className={styles.grid}>
-            {featured.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
-          <div className={styles.allLink}>
-            <Link to="/projects" className={styles.viewAll}>
-              View all projects <ArrowRight />
-            </Link>
-          </div>
+        <div className={styles.grid}>
+          {featured.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </div>
+        <div className={styles.allLink}>
+          <Link to="/projects" className={styles.viewAll}>
+            View all projects <ArrowRight />
+          </Link>
         </div>
       </Section>
 
       {/* ── About Snippet ── */}
       <Section title="About Me" id="about">
-        <div className={styles.orbWrap}>
-          <div className={styles.orb3} aria-hidden="true" />
-          <div className={styles.aboutSnippet}>
-            <div className={styles.aboutText}>
-              <p className={styles.bio}>{profile.bio}</p>
-              <div className={styles.aboutCtas}>
-                <Button href="/about" variant="secondary">
-                  More about me <ArrowRight />
-                </Button>
-                <Button href={profile.github} variant="ghost" external>
-                  GitHub
-                </Button>
+        <div className={styles.aboutSnippet}>
+          <div className={styles.aboutText}>
+            <p className={styles.bio}>{profile.bio}</p>
+            <div className={styles.aboutCtas}>
+              <Button href="/about" variant="secondary">
+                More about me <ArrowRight />
+              </Button>
+              <Button href={profile.github} variant="ghost" external>
+                GitHub
+              </Button>
+            </div>
+          </div>
+          <div className={styles.quickSkills}>
+            {profile.skills.map((group) => (
+              <div key={group.category} className={styles.skillGroup}>
+                <span className={styles.skillCategory}>{group.category}</span>
+                <span className={styles.skillItems}>{group.items.join(", ")}</span>
               </div>
-            </div>
-            <div className={styles.quickSkills}>
-              {profile.skills.map((group) => (
-                <div key={group.category} className={styles.skillGroup}>
-                  <span className={styles.skillCategory}>{group.category}</span>
-                  <span className={styles.skillItems}>{group.items.join(", ")}</span>
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </Section>

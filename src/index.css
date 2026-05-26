@@ -1,9 +1,8 @@
 /* ─── Design Tokens ─────────────────────────────────── */
 :root {
-  --grain-opacity: 0.030;
   --text: #6b6375;
   --text-h: #08060d;
-  --bg: #fff;
+  --bg: #ffffff;
   --border: #e5e4e7;
   --code-bg: #f4f3ec;
   --accent: #aa3bff;
@@ -21,11 +20,21 @@
   letter-spacing: 0.15px;
   color-scheme: light dark;
   color: var(--text);
-  background: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /*
+   * Gradient background — gives backdrop-filter something colourful
+   * to blur so the glass effect is actually visible.
+   */
+  background:
+    radial-gradient(ellipse 700px 600px at 92% 8%,  rgba(170, 59, 255, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 600px 500px at 8%  90%, rgba(99, 102, 241, 0.14) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 400px at 50% 50%, rgba(236, 72, 153, 0.07) 0%, transparent 70%),
+    var(--bg);
+  background-attachment: fixed;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -41,6 +50,13 @@
     --shadow:
       rgba(0, 0, 0, 0.5) 0 8px 24px -4px,
       rgba(0, 0, 0, 0.3) 0 2px 6px -1px;
+
+    background:
+      radial-gradient(ellipse 700px 600px at 92% 8%,  rgba(192, 132, 252, 0.30) 0%, transparent 65%),
+      radial-gradient(ellipse 600px 500px at 8%  90%, rgba(99, 102, 241, 0.24) 0%, transparent 65%),
+      radial-gradient(ellipse 400px 400px at 55% 45%, rgba(236, 72, 153, 0.14) 0%, transparent 65%),
+      var(--bg);
+    background-attachment: fixed;
   }
 }
 
@@ -54,6 +70,8 @@
 body {
   margin: 0;
   min-height: 100svh;
+  /* body must be transparent so the html gradient shows through */
+  background: transparent;
 }
 
 #root {
@@ -64,66 +82,31 @@ body {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
+  /* transparent so the gradient behind it is visible */
+  background: transparent;
 }
 
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   font-family: var(--heading);
   color: var(--text-h);
 }
 
-p {
-  margin: 0;
-}
+p { margin: 0; }
+a { color: inherit; }
 
-a {
-  color: inherit;
-}
-
-/* ─── Scrollbar (subtle) ────────────────────────────── */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-}
-
+/* ─── Scrollbar ─────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
 body {
   cursor: url('/cursor-removebg-preview.png'), auto;
-  scroll-behavior: smooth;
 }
 
-/* ─── Film grain overlay (adds depth/texture) ───────── */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  opacity: var(--grain-opacity);
-}
-
-/* ─── Accent glow on focused interactive elements ────── */
+/* ─── Focus ring ────────────────────────────────────── */
 button:focus-visible,
 a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 4px;
-}
-
-/* ─── Subtle section entrance ───────────────────────── */
-@keyframes sectionReveal {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.reveal {
-  animation: sectionReveal 0.55s ease both;
 }
