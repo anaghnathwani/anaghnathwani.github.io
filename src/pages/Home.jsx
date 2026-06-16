@@ -21,6 +21,8 @@ export default function Home() {
     <PageLayout>
       {/* ── Hero ── */}
       <div className={styles.hero}>
+        <div className={styles.heroDots} aria-hidden />
+        <div className={styles.heroGlow} aria-hidden />
         <div className={styles.heroInner}>
           <p className={styles.greeting}>Hey, I'm</p>
           <h1 className={styles.name}>{profile.name}</h1>
@@ -34,7 +36,6 @@ export default function Home() {
             </Button>
           </div>
         </div>
-        <div className={styles.heroGlow} aria-hidden />
       </div>
 
       {/* ── Featured Projects ── */}
